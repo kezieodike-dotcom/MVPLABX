@@ -1,0 +1,17 @@
+{
+    "name": "mvplab-monorepo",
+    "private": true,
+    "description": "MVPLab Monorepo for AI-powered services",
+    "workspaces": [
+        "apps/*",
+        "MVPLAB_WEB"
+    ],
+    "scripts": {
+        "dev": "npm run dev --workspaces --if-present",
+        "build": "npm run build --workspaces --if-present",
+        "test": "npm test --workspaces --if-present"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+}
