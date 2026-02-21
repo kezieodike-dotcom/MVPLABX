@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls \"C:\\\\Users\\\\USER\\\\Desktop\\\\app projects\\\\project 2025\\\\New folder\\\\frontend\\\\src-tauri\\\\capabilities\"\" 2>/dev/null || echo \"dir not found \")"
+    ]
+  }
+}
