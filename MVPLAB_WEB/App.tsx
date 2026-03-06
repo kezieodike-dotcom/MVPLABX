@@ -1,317 +1,123 @@
-
 import React, { useState, useEffect } from 'react';
-// Fix: Added missing TrendingUp and Globe imports from lucide-react.
-import { 
-  ArrowRight, 
-  ChevronDown, 
-  Menu, 
-  X, 
-  Github, 
-  Twitter, 
-  Linkedin, 
-  Instagram,
-  Monitor,
-  Zap,
-  Server,
+import { useNavigate } from 'react-router-dom';
+import {
+  ArrowRight,
+  Menu,
+  X,
   Shield,
-  Activity,
+  Zap,
+  Globe,
   Plus,
   Minus,
-  TrendingUp,
-  Globe
+  Monitor,
+  Server,
+  Github,
+  Twitter,
+  Linkedin,
+  Instagram
 } from 'lucide-react';
-import { 
-  NAV_LINKS, 
-  ECOSYSTEM_FEATURES, 
-  PRODUCTS, 
-  FAQS 
+import {
+  NAV_LINKS,
+  PRODUCTS,
+  FAQS,
+  REVIEWS,
+  BLOG_POSTS,
 } from './constants';
+import { supabase } from './src/utils/supabaseClient';
+import { Navbar } from './src/components/layout/Navbar';
+import { Footer } from './src/components/layout/Footer';
+import FeaturesCards from './src/components/ui/feature-shader-cards';
+import { TestimonialsColumn } from './src/components/ui/testimonials-columns-1';
+import BlogsShowcase from './src/components/ui/blogs';
+import { CTA } from './src/components/ui/call-to-action';
+import { motion } from "framer-motion";
 
 // --- Sub-components ---
 
-const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'glass py-3' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-tr from-purple-600 to-blue-500 rounded-lg flex items-center justify-center font-bold text-lg">M</div>
-          <span className="font-bold text-xl tracking-tight Outfit">MoonRow</span>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
-              {link.label}
-            </a>
-          ))}
-          <button className="px-5 py-2 bg-white text-black text-sm font-semibold rounded-full hover:bg-gray-200 transition-all">
-            Start Project
-          </button>
-        </div>
-
-        <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-          {mobileMenuOpen ? <X /> : <Menu />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[70px] bg-black/95 backdrop-blur-xl p-6 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
-          {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="text-lg font-medium border-b border-white/10 pb-4">
-              {link.label}
-            </a>
-          ))}
-          <button className="w-full py-4 bg-white text-black font-bold rounded-xl mt-4">
-            Start Project
-          </button>
-        </div>
-      )}
-    </nav>
-  );
-};
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-      {/* Background Orbital Elements */}
+    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] orbit-path opacity-20"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] orbit-path opacity-40 border-dashed"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] orbit-path opacity-60"></div>
-        
-        {/* Glowing Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]"></div>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          src="https://assets-global.website-files.com/658747171711643006830765/658747171711643006830795_hero-bg-compressor.mp4"
+        ></video>
+        <div className="absolute inset-0 bg-black/60"></div>
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-purple-400 mb-8 animate-bounce">
           <span className="w-2 h-2 rounded-full bg-purple-400"></span>
           New: Intelligent Automation Partner
         </div>
-        
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[1.1] Outfit">
-          We Build Scalable <br />
-          <span className="gradient-text">AI Applications</span> <br />
-          for Forward-Thinking Businesses
-        </h1>
-        
-        <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-          From concept to launch, we design, develop, and scale AI-powered systems that solve real problems and drive measurable growth.
-        </p>
 
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-[1.1] Outfit tracking-tight">
+          From Idea to Launch <br />
+          <span className="gradient-text">We Build Apps &amp; Websites</span> <br />
+          That Work
+        </h1>
+        <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
+          Leveraging cutting-edge AI and a decade of development expertise, we craft digital products that drive growth and deliver exceptional user experiences.
+        </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button className="group px-8 py-4 bg-white text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-            Start Your AI Project
+          <button onClick={() => navigate('/build-with-us')} className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+            Build With Us <ArrowRight className="w-5 h-5" />
+          </button>
+          <button onClick={() => navigate('/ai-investment')} className="group px-8 py-4 bg-transparent text-white font-bold border border-white/20 rounded-full flex items-center gap-2 hover:bg-white/5 transition-colors">
+            Invest With Us
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
-          <button className="px-8 py-4 bg-transparent text-white font-bold border border-white/20 rounded-full hover:bg-white/5 transition-colors">
-            Book a Strategy Call
-          </button>
-        </div>
-
-        {/* Partners Scroller Mockup */}
-        <div className="mt-24 pt-10 border-t border-white/5 opacity-50">
-          <p className="text-xs uppercase tracking-widest text-gray-500 mb-8 font-semibold">Trusted by Innovative Teams Globally</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center grayscale">
-            {['Purina', 'Fusion', 'Cigna', 'ASCC', 'Allianz'].map(name => (
-              <span key={name} className="text-xl font-bold tracking-tighter Outfit text-gray-400">{name}</span>
-            ))}
-          </div>
         </div>
       </div>
     </section>
   );
 };
 
-const Ecosystem: React.FC = () => {
-  return (
-    <section id="platform" className="py-24 bg-black relative">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="w-12 h-1 px-1 bg-purple-600 mb-6"></div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 Outfit">More Than a Development Studio</h2>
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-              While our core focus is building AI applications for clients, we operate a broader AI venture ecosystem designed to support founders, investors, developers, and digital creators.
-            </p>
-            <p className="text-gray-400 text-lg mb-10">
-              This integrated model allows us to not only build products — but help them scale, attract users, and unlock capital opportunities.
-            </p>
-            <button className="px-8 py-4 glass rounded-full font-bold hover:bg-white/10 transition-colors">
-              Learn More About Our Platform
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {ECOSYSTEM_FEATURES.map((feature, i) => (
-              <div key={i} className="glass p-6 rounded-2xl hover:border-purple-500/50 transition-all group">
-                <div className="mb-4 bg-white/5 w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  {feature.icon}
-                </div>
-                <h3 className="font-bold text-lg mb-2 Outfit">{feature.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Development: React.FC = () => {
-  const services = [
-    { title: 'AI-powered SaaS', icon: <Monitor className="w-5 h-5" /> },
-    { title: 'Intelligent Automation', icon: <Zap className="w-5 h-5" /> },
-    { title: 'Intelligence Dashboards', icon: <Activity className="w-5 h-5" /> },
-    { title: 'Enterprise AI Tools', icon: <Server className="w-5 h-5" /> },
+const StatsBanner: React.FC<{ stats?: any[] }> = ({ stats = [] }) => {
+  const defaultStats = [
+    { label: 'Products Shipped', value: '12', suffix: '+' },
+    { label: 'Value Generated', value: '5', prefix: '$', suffix: 'M+' },
+    { label: 'Active Edge Users', value: '250', suffix: 'k+' },
+    { label: 'API Uptime', value: '99.9', suffix: '%' }
   ];
 
-  return (
-    <section id="development" className="py-24 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <span className="text-purple-400 text-sm font-bold uppercase tracking-[0.2em]">Our Focus</span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 Outfit">Custom AI Solutions Built to Scale</h2>
-        </div>
+  const displayStats = stats.length > 0 ? stats : defaultStats;
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {services.map((service, i) => (
-            <div key={i} className="bg-gradient-to-b from-white/5 to-transparent p-8 rounded-3xl border border-white/5 flex flex-col items-center text-center">
-              <div className="w-14 h-14 rounded-2xl bg-purple-600/20 flex items-center justify-center text-purple-400 mb-6">
-                {service.icon}
-              </div>
-              <h3 className="font-bold text-xl Outfit">{service.title}</h3>
+  return (
+    <section className="py-16 border-b border-white/5 bg-black">
+      <div className="max-w-7xl mx-auto px-6">
+        <p className="text-center text-sm font-bold text-gray-500 uppercase tracking-widest mb-10">Trusted by visionaries at</p>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+          <span className="text-xl font-bold font-mono text-white">NEURAL.</span>
+          <span className="text-xl font-bold font-serif italic text-white">Vanguard AI</span>
+          <span className="text-xl font-black tracking-tighter text-white">OXTN VCs</span>
+          <span className="text-xl font-bold text-white">SYNTHESIS</span>
+          <span className="text-xl font-bold tracking-widest text-white">AETHER</span>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-white/5 text-center">
+          {displayStats.map((stat, i) => (
+            <div key={i}>
+              <h4 className="text-4xl font-bold text-white mb-2 Outfit">
+                {stat.prefix}{stat.value}{stat.suffix}
+              </h4>
+              <p className="text-xs md:text-sm text-gray-500 uppercase font-bold tracking-widest">{stat.label}</p>
             </div>
           ))}
         </div>
-
-        <div className="glass rounded-[40px] p-8 md:p-16 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-purple-900/10 to-transparent pointer-events-none"></div>
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-3xl font-bold mb-6 Outfit">Full Lifecycle Management</h3>
-              <div className="space-y-6">
-                {['Strategy', 'Architecture', 'Development', 'Launch', 'Optimization', 'Scaling'].map((step, i) => (
-                  <div key={i} className="flex items-center gap-4 group">
-                    <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-sm font-bold text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all">
-                      {i + 1}
-                    </span>
-                    <span className="text-lg font-medium text-gray-300">{step}</span>
-                  </div>
-                ))}
-              </div>
-              <button className="mt-10 px-8 py-4 bg-purple-600 rounded-full font-bold hover:bg-purple-700 transition-colors">
-                Discuss Your AI Project
-              </button>
-            </div>
-            
-            <div className="bg-black/40 rounded-3xl p-6 border border-white/10 shadow-2xl">
-               <pre className="text-xs md:text-sm font-mono text-purple-300 leading-relaxed overflow-x-auto">
-{`async function generateResponse(prompt) {
-  const response = await fetch('/api/gemini', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': \`Bearer \${API_KEY}\`
-    },
-    body: JSON.stringify({
-      model: 'gemini-3-pro-preview',
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      config: { temperature: 0.7 }
-    })
-  });
-  
-  const data = await response.json();
-  return data.candidates[0].content.parts[0].text;
-}`}
-               </pre>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
 };
 
-const Investment: React.FC = () => {
-  return (
-    <section id="investment" className="py-24 bg-[#050505]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="order-2 lg:order-1 relative">
-            <div className="absolute -top-10 -left-10 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]"></div>
-            <div className="glass p-8 rounded-3xl relative z-10">
-              <div className="flex justify-between items-end mb-8">
-                <div>
-                  <p className="text-gray-400 text-sm mb-1 uppercase tracking-widest font-bold">Portfolio Performance</p>
-                  <h4 className="text-4xl font-bold Outfit text-emerald-400">+124.8%</h4>
-                </div>
-                <div className="text-right">
-                   <div className="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold rounded-full">LIVE TRACTION</div>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                {[
-                  { name: 'Edutu', roi: '14.2%', users: '12k+' },
-                  { name: 'Your Life OS', roi: '32.1%', users: '45k+' },
-                  { name: 'Certificate Center', roi: '8.4%', users: '5k+' }
-                ].map((item, i) => (
-                  <div key={i} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5">
-                    <div>
-                      <p className="font-bold Outfit">{item.name}</p>
-                      <p className="text-xs text-gray-500">{item.users} Active Users</p>
-                    </div>
-                    <div className="text-emerald-400 font-bold">+{item.roi}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="order-1 lg:order-2">
-            <span className="text-emerald-400 text-sm font-bold uppercase tracking-[0.2em]">Validated Assets</span>
-            <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6 Outfit">Invest in Validated AI Products</h2>
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-              We scale selected AI applications to measurable user traction before opening structured investment participation. Our model ensures transparency and growth.
-            </p>
-            <ul className="space-y-4 mb-10">
-              <li className="flex items-center gap-3 text-gray-300">
-                <Shield className="w-5 h-5 text-emerald-500" />
-                Real traction before listing
-              </li>
-              <li className="flex items-center gap-3 text-gray-300">
-                <Activity className="w-5 h-5 text-emerald-500" />
-                Real-time performance visibility
-              </li>
-              <li className="flex items-center gap-3 text-gray-300">
-                <TrendingUp className="w-5 h-5 text-emerald-500" />
-                Revenue-backed digital assets
-              </li>
-            </ul>
-            <button className="px-8 py-4 bg-emerald-600 rounded-full font-bold hover:bg-emerald-700 transition-colors">
-              Explore Investment Opportunities
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const AppsShowcase: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section id="apps" className="py-24 bg-black">
       <div className="max-w-7xl mx-auto px-6">
@@ -322,33 +128,34 @@ const AppsShowcase: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {PRODUCTS.map((app) => (
-            <div key={app.id} className="group relative glass p-8 rounded-[32px] hover:border-white/20 transition-all overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full group-hover:bg-white/10 transition-colors"></div>
-              <div className="relative z-10">
-                <div className="mb-8">{app.icon}</div>
+            <div
+              key={app.id}
+              onClick={() => navigate('/our-apps')}
+              className="group relative glass rounded-[32px] hover:border-white/20 transition-all overflow-hidden flex flex-col cursor-pointer"
+            >
+              <div className="h-48 overflow-hidden relative">
+                <img src={app.image} alt={app.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div className="absolute bottom-4 left-6">
+                  <div className="p-2 bg-black/50 backdrop-blur-md rounded-lg inline-block">{app.icon}</div>
+                </div>
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
                 <h3 className="text-2xl font-bold Outfit mb-2">{app.name}</h3>
                 <p className="text-purple-400 text-sm font-bold mb-4 uppercase tracking-widest">{app.tagline}</p>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">
                   {app.description}
                 </p>
-                <button className="flex items-center gap-2 text-white font-bold text-sm hover:gap-4 transition-all">
+                <button className="flex items-center gap-2 text-white font-bold text-sm hover:gap-4 transition-all pointer-events-none">
                   Visit App <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
           ))}
-          {/* Coming Soon card */}
-          <div className="glass p-8 rounded-[32px] border-dashed border-white/20 flex flex-col items-center justify-center text-center group">
-            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Plus className="w-8 h-8 text-gray-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-500 mb-2 Outfit">New Project</h3>
-            <p className="text-sm text-gray-600">Currently in development. Coming soon to the ecosystem.</p>
-          </div>
         </div>
-        
+
         <div className="mt-16 text-center">
-          <button className="px-10 py-4 glass rounded-full font-bold hover:bg-white/10 transition-colors">
+          <button onClick={() => navigate('/our-apps')} className="px-10 py-4 glass rounded-full font-bold hover:bg-white/10 transition-colors">
             Explore All Our Products
           </button>
         </div>
@@ -358,6 +165,7 @@ const AppsShowcase: React.FC = () => {
 };
 
 const Community: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section id="community" className="py-24 bg-gradient-to-b from-black to-purple-950/20">
       <div className="max-w-5xl mx-auto px-6 text-center">
@@ -380,7 +188,7 @@ const Community: React.FC = () => {
           ))}
         </div>
 
-        <button className="px-12 py-5 bg-white text-black font-bold rounded-full hover:scale-105 transition-all">
+        <button onClick={() => navigate('/community')} className="px-12 py-5 bg-white text-black font-bold rounded-full hover:scale-105 transition-all">
           Join Our Community
         </button>
       </div>
@@ -388,123 +196,120 @@ const Community: React.FC = () => {
   );
 };
 
-const FAQ: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+const Testimonials: React.FC = () => {
+  const firstColumn = REVIEWS.slice(0, 3);
+  const secondColumn = REVIEWS.slice(3, 6);
+  const thirdColumn = REVIEWS.slice(6, 9);
 
   return (
-    <section className="py-24 bg-black">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold Outfit">Got Questions? <br /> We've Got Answers</h2>
-        </div>
+    <section className="py-24 bg-black relative overflow-hidden">
+      <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none"></div>
 
-        <div className="space-y-4">
-          {FAQS.map((faq, i) => (
-            <div key={i} className="glass rounded-2xl overflow-hidden">
-              <button 
-                className="w-full p-6 flex justify-between items-center text-left hover:bg-white/5 transition-colors"
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-              >
-                <span className="font-bold md:text-lg Outfit">{faq.question}</span>
-                {openIndex === i ? <Minus className="text-purple-400" /> : <Plus />}
-              </button>
-              {openIndex === i && (
-                <div className="px-6 pb-6 text-gray-400 leading-relaxed animate-in slide-in-from-top-4 duration-300">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
+      <div className="max-w-7xl mx-auto px-6 relative z-0">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center justify-center max-w-2xl mx-auto text-center mb-16"
+        >
+          <div className="inline-block px-4 py-2 bg-white/5 border border-white/10 text-white rounded-full text-xs font-bold mb-6 uppercase tracking-widest">
+            Testimonials
+          </div>
+
+          <h2 className="text-4xl md:text-5xl font-bold Outfit">
+            What Our Partners Say
+          </h2>
+          <p className="mt-6 text-gray-400 text-lg leading-relaxed">
+            See what our customers, founders, and investors have to say about building with MVP Labs X.
+          </p>
+        </motion.div>
+
+        <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] h-[600px] overflow-hidden">
+          <TestimonialsColumn testimonials={firstColumn} duration={15} />
+          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={19} />
+          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={17} />
         </div>
       </div>
     </section>
   );
 };
 
-const Footer: React.FC = () => {
+const FAQ: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const navigate = useNavigate();
+
   return (
-    <footer className="pt-24 pb-10 bg-[#030303] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 mb-20">
-          <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-tr from-purple-600 to-blue-500 rounded-lg flex items-center justify-center font-bold text-lg">M</div>
-              <span className="font-bold text-2xl tracking-tight Outfit">MoonRow</span>
-            </div>
-            <p className="text-gray-500 max-w-xs mb-8">
-              Empowering forward-thinking businesses through intelligent automation and validated AI digital assets.
-            </p>
-            <div className="flex gap-4">
-              <Github className="w-5 h-5 text-gray-500 hover:text-white cursor-pointer" />
-              <Twitter className="w-5 h-5 text-gray-500 hover:text-white cursor-pointer" />
-              <Linkedin className="w-5 h-5 text-gray-500 hover:text-white cursor-pointer" />
-              <Instagram className="w-5 h-5 text-gray-500 hover:text-white cursor-pointer" />
-            </div>
-          </div>
-          
-          <div>
-            <h4 className="font-bold mb-6 Outfit">Platform</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li className="hover:text-white transition-colors cursor-pointer">AI Development</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Platform Overview</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Investment</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Security</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-6 Outfit">Ecosystem</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li className="hover:text-white transition-colors cursor-pointer">Our Apps</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Community</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Developers</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Blog</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-6 Outfit">Support</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li className="hover:text-white transition-colors cursor-pointer">FAQs</li>
-              <li className="hover:text-white transition-colors cursor-pointer">API Access</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Documentation</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Contact</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-6 Outfit">Legal</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li className="hover:text-white transition-colors cursor-pointer">Privacy Policy</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Terms of Service</li>
-              <li className="hover:text-white transition-colors cursor-pointer">Compliance</li>
-            </ul>
-          </div>
+    <section id="faq" className="py-24 bg-black">
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <span className="text-purple-400 text-sm font-bold uppercase tracking-[0.2em]">FAQ</span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4 Outfit">Clear Answers. No Confusion.</h2>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-white/5 text-xs text-gray-600">
-          <p>© 2025 MoonRow Inc. All trademarks are property of their respective owners.</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <span>Privacy Policy</span>
-            <span>Terms of Service</span>
-            <span>Intellectual Property Rights</span>
-          </div>
+        <div className="space-y-4">
+          {FAQS.map((faq, i) => (
+            <div
+              key={i}
+              className={`glass rounded-2xl overflow-hidden transition-all duration-300 ${openIndex === i ? 'border-purple-500/50' : 'hover:border-white/20'
+                }`}
+            >
+              <button
+                className="w-full px-8 py-6 flex items-center justify-between text-left"
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              >
+                <span className="font-bold text-lg Outfit">{faq.question}</span>
+                <span className={`transition-transform duration-300 ${openIndex === i ? 'rotate-180 text-purple-400' : 'text-gray-500'}`}>
+                  ▼
+                </span>
+              </button>
+              <div
+                className={`px-8 overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-96 pb-6 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+              >
+                <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <button onClick={() => navigate('/build-with-us')} className="group px-10 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-all flex items-center gap-2 mx-auto">
+            Got More Questions? Let's Talk
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
-    </footer>
+    </section>
   );
 };
+
 
 // --- Main App Component ---
 
 const App: React.FC = () => {
+  const navigate = useNavigate();
+  const [stats, setStats] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchLiveStats = async () => {
+      try {
+        const { data } = await supabase.from('platform_stats').select('*');
+        if (data && data.length > 0) setStats(data);
+      } catch (err) {
+        console.error('Stats fetch failed:', err);
+      }
+    };
+    fetchLiveStats();
+  }, []);
+
   return (
-    <div className="min-h-screen selection:bg-purple-500/30">
+    <div className="min-h-screen selection:bg-purple-500/30 text-white">
       <Navbar />
       <Hero />
-      <Ecosystem />
-      <Development />
-      
+      <StatsBanner stats={stats} />
+      <FeaturesCards />
+
       {/* 10x Speed Highlight */}
       <section className="py-24 relative">
         <div className="max-w-7xl mx-auto px-6 text-center">
@@ -513,47 +318,43 @@ const App: React.FC = () => {
           <p className="text-gray-400 text-xl max-w-2xl mx-auto mb-16">
             Our microservices architecture and proprietary AI frameworks cut repetitive tasks, reduce errors, and boost productivity to unprecedented levels.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-             <div className="flex flex-col items-center gap-4">
-                <Shield className="w-8 h-8 text-blue-400" />
-                <h4 className="font-bold Outfit">Scalable Architecture</h4>
-                <p className="text-sm text-gray-500 text-center">From small teams to enterprises, our system grows with you.</p>
-             </div>
-             <div className="flex flex-col items-center gap-4">
-                <Zap className="w-8 h-8 text-yellow-400" />
-                <h4 className="font-bold Outfit">Plug & Play Compatibility</h4>
-                <p className="text-sm text-gray-500 text-center">Connect with existing platforms (CRM, ERP, Marketing Tools) in minutes.</p>
-             </div>
-             <div className="flex flex-col items-center gap-4">
-                <Globe className="w-8 h-8 text-cyan-400" />
-                <h4 className="font-bold Outfit">Cross-Platform Integration</h4>
-                <p className="text-sm text-gray-500 text-center">Works across cloud, hybrid, and on-premise environments.</p>
-             </div>
+            <div className="flex flex-col items-center gap-4">
+              <Shield className="w-8 h-8 text-blue-400" />
+              <h4 className="font-bold Outfit">Scalable Architecture</h4>
+              <p className="text-sm text-gray-500 text-center">From small teams to enterprises, our system grows with you.</p>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <Zap className="w-8 h-8 text-yellow-400" />
+              <h4 className="font-bold Outfit">Plug & Play Compatibility</h4>
+              <p className="text-sm text-gray-500 text-center">Connect with existing platforms (CRM, ERP, Marketing Tools) in minutes.</p>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <Globe className="w-8 h-8 text-cyan-400" />
+              <h4 className="font-bold Outfit">Cross-Platform Integration</h4>
+              <p className="text-sm text-gray-500 text-center">Works across cloud, hybrid, and on-premise environments.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <Investment />
       <AppsShowcase />
       <Community />
+      <Testimonials />
+      <BlogsShowcase />
       <FAQ />
 
       {/* Final CTA */}
-      <section className="py-32 bg-black relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[300px] bg-purple-600/10 blur-[150px]"></div>
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 Outfit">Ready to Build Your <br /> AI Application?</h2>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="px-10 py-5 bg-white text-black font-bold rounded-full text-lg hover:scale-105 transition-all">
-              Start Your AI Project
-            </button>
-            <button className="px-10 py-5 bg-transparent text-white border border-white/20 font-bold rounded-full text-lg hover:bg-white/5 transition-all">
-              Schedule a Consultation
-            </button>
-          </div>
-        </div>
-      </section>
+      <CTA
+        onPrimaryClick={() => navigate('/build-with-us')}
+        onSecondaryClick={() => navigate('/ai-investment')}
+        primaryLabel="Start Building Today"
+        secondaryLabel="Invest With Us"
+        title="Ready to Build or Invest?"
+        description="Whether you want to fully own your next digital product or co-build an AI venture with others — we're ready."
+        badgeLabel="Get started"
+      />
 
       <Footer />
     </div>

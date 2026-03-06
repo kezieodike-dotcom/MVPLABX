@@ -9,7 +9,7 @@ This project is organized as a monorepo using **npm workspaces**.
 ```text
 /
 ├── apps/
-│   ├── MVPLAB_WEB/          # Main Landing Page (MoonRow)
+│   ├── MVPLAB_WEB/          # Main Landing Page (MVPLABX)
 │   ├── MVPLAB_VOICELAB/     # AI Voice Synthesis & Laboratory
 │   ├── MVPLAB_COMMUNITY/    # Community Engagement Platform
 │   ├── MVPLAB_INVESTMENT/   # AI-Driven Investment Dashboard
@@ -62,7 +62,7 @@ npm run dev --workspaces
 
 ## 📜 Projects Overview
 
-### MoonRow (MVPLAB_WEB)
+### MVPLABX (MVPLAB_WEB)
 The flagship landing page for MVPLab X, showcasing scalable AI applications for forward-thinking businesses.
 
 ### VoiceLab (MVPLAB_VOICELAB)
@@ -70,4 +70,4 @@ Advanced AI voice processing and synthesis platform.
 
 ## 🛡 License
 
-© 2025 MVPLab. All rights reserved.
+© 2026 MVPLab. All rights reserved.

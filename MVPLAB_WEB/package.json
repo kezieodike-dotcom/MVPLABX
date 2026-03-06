@@ -1,5 +1,5 @@
 {
-  "name": "moonrow---ai-build-&-invest-platform",
+  "name": "mvplabx-ai-build-and-invest-platform",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,9 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.71",
+    "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/supabase-js": "^2.97.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.574.0",
+    "motion": "^12.34.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "lucide-react": "^0.574.0"
+    "react-router-dom": "^7.13.0",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
